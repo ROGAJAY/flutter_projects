@@ -1,0 +1,24 @@
+// Ensure the plugins {} block is at the top
+plugins {
+    // Google services Gradle plugin (for Firebase)
+    id 'com.google.gms.google-services' version '4.4.2' apply false
+}
+
+allprojects {
+    repositories {
+        google() // Required for Firebase and Android libraries
+        mavenCentral() // For general libraries
+    }
+}
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(":app") // Ensure app module is evaluated before others
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
